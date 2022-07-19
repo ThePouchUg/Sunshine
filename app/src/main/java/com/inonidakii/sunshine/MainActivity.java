@@ -1,13 +1,26 @@
 package com.inonidakii.sunshine;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.inonidakii.sunshine.utilities.NetworkUtils;
+
+import java.io.IOException;
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView eWeatherTextView;
+    EditText eLocationEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,23 +28,68 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         eWeatherTextView = findViewById(R.id.tv_weather_data);
+        eLocationEditText = findViewById(R.id.et_user_location);
 
-        // TODO (4) Delete the dummy weather data. You will be getting REAL data from the Internet in this lesson.
-        String[] thorsNotes = {"Rainy", "Flooded", "Icy", "Frozen", "Muddy", "Slippery"};
-
-        // TODO (3) Delete the for loop that populates the TextView with dummy data
-        for (String weather : thorsNotes) {
-            eWeatherTextView.append(weather + "\n");
-        }
-
-        // TODO (9) Call loadWeatherData to perform the network request to get the weather
 
     }
 
-    // TODO (8) Create a method that will get the user's preferred location and execute your new AsyncTask and call it loadWeatherData
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
 
-    // TODO (5) Create a class that extends AsyncTask to perform network requests
-    // TODO (6) Override the doInBackground method to perform your network requests
-    // TODO (7) Override the onPostExecute method to display the results of the network request
+        inflater.inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_search) {
+            loadWeatherData();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void loadWeatherData() {
+        String request = eLocationEditText.getText().toString();
+        if (!request.equals("")) {
+            URL requestUrl = NetworkUtils.buildUrl(request);
+            new GetWeatherDataTask().execute(requestUrl);
+        } else {
+            eWeatherTextView.setText("Enter request en try again");
+        }
+
+    }
+
+    class GetWeatherDataTask extends AsyncTask<URL, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(URL... urls) {
+            String response = null;
+            try {
+                response = NetworkUtils.getResponseFromHttpUrl(urls[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(MainActivity.this, "check your connection en try again", Toast.LENGTH_SHORT).show();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String weatherData) {
+            super.onPostExecute(weatherData);
+            if (weatherData != null && !weatherData.equals("")) {
+                eWeatherTextView.setText(weatherData);
+            } else {
+                eWeatherTextView.setText("Check your query and try again");
+            }
+
+
+        }
+    }
 
 }
