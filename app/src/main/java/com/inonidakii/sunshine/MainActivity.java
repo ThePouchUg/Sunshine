@@ -2,20 +2,19 @@ package com.inonidakii.sunshine;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.inonidakii.sunshine.data.SunshinePreferences;
 import com.inonidakii.sunshine.utilities.NetworkUtils;
+import com.inonidakii.sunshine.utilities.OpenWeatherJsonUtils;
 
-import java.io.IOException;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,58 +38,70 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
 
         inflater.inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.forecast, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_search) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_search) {
+            loadWeatherData();
+        } else if (itemId == R.id.action_refresh) {
+            eWeatherTextView.setText("");
             loadWeatherData();
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void loadWeatherData() {
-        String request = eLocationEditText.getText().toString();
-        if (!request.equals("")) {
-            URL requestUrl = NetworkUtils.buildUrl(request);
-            new GetWeatherDataTask().execute(requestUrl);
-        } else {
-            eWeatherTextView.setText("Enter request en try again");
-        }
+        String location = SunshinePreferences.getPreferredWeatherLocation(this);
+        new GetWeatherDataTask().execute(location);
 
     }
 
-    class GetWeatherDataTask extends AsyncTask<URL, Void, String> {
+    class GetWeatherDataTask extends AsyncTask<String, Void, String[]> {
+
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
+        protected String[] doInBackground(String... params) {
+            /* If there's no zip code, there's nothing to look up. */
+            if (params.length == 0) {
+                return null;
+            }
 
-        @Override
-        protected String doInBackground(URL... urls) {
-            String response = null;
+            String location = params[0];
+            URL weatherRequestUrl = NetworkUtils.buildUrl(location);
+
             try {
-                response = NetworkUtils.getResponseFromHttpUrl(urls[0]);
-            } catch (IOException e) {
+                String jsonWeatherResponse = NetworkUtils
+                        .getResponseFromHttpUrl(weatherRequestUrl);
+
+                String[] simpleJsonWeatherData = OpenWeatherJsonUtils
+                        .getSimpleWeatherStringsFromJson(MainActivity.this, jsonWeatherResponse);
+
+                return simpleJsonWeatherData;
+            } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(MainActivity.this, "check your connection en try again", Toast.LENGTH_SHORT).show();
+                return null;
             }
-            return response;
         }
 
         @Override
-        protected void onPostExecute(String weatherData) {
-            super.onPostExecute(weatherData);
-            if (weatherData != null && !weatherData.equals("")) {
-                eWeatherTextView.setText(weatherData);
-            } else {
-                eWeatherTextView.setText("Check your query and try again");
+        protected void onPostExecute(String[] weatherData) {
+            if (weatherData != null) {
+                /*Iterate through the array and append the strings to the textview. The reason we add
+                the "\n\n\n" after the String is to give visual separation between seach String in the
+                Later we 'll learn about a better way to display lists of data.
+                * */
+                for (String weatherString : weatherData) {
+                    eWeatherTextView.append(weatherString + "\n\n\n");
+                }
             }
-
-
         }
     }
-
 }
+
+
+
+
