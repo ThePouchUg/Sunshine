@@ -4,7 +4,7 @@
     <!--Used in overflow menu to refresh weather data-->
     <string name="refresh">Refresh</string>
 
-    <!--TODO (1) Add a string resource for your error message-->
+    <!--DONE (1) Add a string resource for your error message-->
     <string name="error">Fvcked</string>
 
     <!-- - - - - - - - - - - - - -->
@@ -107,6 +107,7 @@
 
     <string name="condition_unknown">Unknown (<xliff:g id="conditionId">%1$d</xliff:g>)</string>
     <string name="enter_your_location">Enter your location...</string>
+    <string name="error_please_retry">Error: Please retry</string>
 
 
     <!-- - - - - - - - - - - -->

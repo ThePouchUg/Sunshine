@@ -19,10 +19,12 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView eWeatherTextView;
-    EditText eLocationEditText;
+    private TextView eWeatherTextView;
+    private EditText eLocationEditText;
+    private TextView errorTextView;
 
-    // TODO (6) Add a TextView variable for the error message display
+
+    // TO-DONE (6) Add a TextView variable for the error message display
 
     // TODO (16) Add a ProgressBar variable to show and hide the progress bar
 
@@ -39,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
         eLocationEditText = findViewById(R.id.et_user_location);
 
 
-        // TODO (7) Find the TextView for the error message using findViewById
+        // TO-DONE (7) Find the TextView for the error message using findViewById
+        errorTextView = findViewById(R.id.tv_error_message);
 
         // TODO (17) Find the ProgressBar using findViewById
 
