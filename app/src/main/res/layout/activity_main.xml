@@ -48,14 +48,25 @@
             android:textSize="20sp"
             android:visibility="invisible" />
 
+        <ProgressBar
+            android:id="@+id/weatherPb"
+            style="?android:attr/progressBarStyle"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible" />
+
+
         <!--DONE (2) Add a TextView that you will show the user if there is an error loading content-->
         <!--DONE (3) Make the width and the height wrap_content-->
         <!--DONE (4) Give the TextView a default error message stating that an error occurred (use strings.xml)-->
         <!--DONE (5) Set the default visibility of the TextView to invisible-->
     </FrameLayout>
-    <!--TODO (12) Add a ProgressBar to show the user content is loading-->
-    <!--TODO (13) Make the width and height of the ProgressBar 42dp-->
-    <!--TODO (14) Set the layout_gravity of the ProgressBar to center-->
-    <!--TODO (15) Set the default visibility of the ProgressBar to invisible-->
+
+    <!--TO-DONE (12) Add a ProgressBar to show the user content is loading-->
+    <!--TO-DONE (13) Make the width and height of the ProgressBar 42dp-->
+    <!--TO-DONE (14) Set the layout_gravity of the ProgressBar to center-->
+    <!--TO-DONE (15) Set the default visibility of the ProgressBar to invisible-->
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>
