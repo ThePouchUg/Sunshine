@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -80,6 +81,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // TODO (8) Create a method called showWeatherDataView that will hide the error message and show the weather data
+    void showWeatherDataView() {
+        errorTextView.setVisibility(View.INVISIBLE);
+        eWeatherTextView.setVisibility(View.VISIBLE);
+    }
 
     // TODO (9) Create a method called showErrorMessage that will hide the weather data and show the error message
     class GetWeatherDataTask extends AsyncTask<String, Void, String[]> {
