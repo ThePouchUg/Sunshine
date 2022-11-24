@@ -25,9 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView errorTextView;
 
 
-    // TO-DONE (6) Add a TextView variable for the error message display
 
-    // TO-DONE (16) Add a ProgressBar variable to show and hide the progress bar
     private ProgressBar eWeatherProgressBar;
 
     @Override
@@ -43,10 +41,8 @@ public class MainActivity extends AppCompatActivity {
         EditText eLocationEditText = findViewById(R.id.et_user_location);
 
 
-        // TO-DONE (7) Find the TextView for the error message using findViewById
         errorTextView = findViewById(R.id.tv_error_message);
 
-        // TO-DONE (17) Find the ProgressBar using findViewById
         eWeatherProgressBar = findViewById(R.id.weatherPb);
         /* Once all of our views are setup, we can load the weather data. */
         loadWeatherData();
@@ -75,20 +71,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadWeatherData() {
-        // TO-DONE (20) Call showWeatherDataView before executing the AsyncTask
         String location = SunshinePreferences.getPreferredWeatherLocation(this);
         showWeatherDataView();
         new GetWeatherDataTask().execute(location);
 
     }
 
-    // TO-DONE (8) Create a method called showWeatherDataView that will hide the error message and show the weather data
     void showWeatherDataView() {
         errorTextView.setVisibility(View.INVISIBLE);
         eWeatherTextView.setVisibility(View.VISIBLE);
     }
 
-    // TO-DONE (9) Create a method called showErrorMessage that will hide the weather data and show the error message
     void showErrorMessage() {
         errorTextView.setVisibility(View.VISIBLE);
         eWeatherTextView.setVisibility(View.INVISIBLE);
@@ -96,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
 
     class GetWeatherDataTask extends AsyncTask<String, Void, String[]> {
 
-        // TO-DONE (18) Within your AsyncTask, override the method onPreExecute and show the loading indicator
 
 
         @Override
@@ -130,10 +122,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String[] weatherData) {
-            // TO-DONE (19) As soon as the data is finished loading, hide the loading indicator
             eWeatherProgressBar.setVisibility(View.INVISIBLE);
             if (weatherData != null) {
-                // TO-DONE (11) If the weather data was not null, make sure the data view is visible
                 showWeatherDataView();
                 /*
                  * Iterate through the array and append the Strings to the TextView. The reason why we add
@@ -144,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
                     eWeatherTextView.append(weatherString + "\n\n\n");
                 }
             }
-            // TO-DONE (10) If the weather data was null, show the error message
             else
                 showErrorMessage();
         }
