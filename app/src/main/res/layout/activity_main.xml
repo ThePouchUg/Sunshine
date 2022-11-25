@@ -20,9 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!--TO-DONE (2) Replace ScrollView and TextView with RecyclerView-->
-        <!--TO-DONE (3) Give the RecyclerView an id of @+id/recyclerview_forecast-->
-        <!--TO-DONE (4) Set the width and the height of the RecyclerView to match_parent-->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_forecast"
             android:layout_width="match_parent"
