@@ -21,6 +21,7 @@ import com.inonidakii.sunshine.utilities.OpenWeatherJsonUtils;
 
 import java.net.URL;
 
+// TODO (8) Implement ForecastAdapterOnClickHandler from the MainActivity
 public class MainActivity extends AppCompatActivity {
 
 
@@ -48,15 +49,30 @@ public class MainActivity extends AppCompatActivity {
         /* This TextView is used to display errors and will be hidden if there are no errors */
         errorTextView = findViewById(R.id.tv_error_message);
 
+        /*
+         * LinearLayoutManager can support HORIZONTAL or VERTICAL orientations. The reverse layout
+         * parameter is useful mostly for HORIZONTAL layouts that should reverse for right to left
+         * languages.
+         */
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
 
         mRecyclerView.setLayoutManager(layoutManager);
 
+        /*
+         * Use this setting to improve performance if you know that changes in content do not
+         * change the child layout size in the RecyclerView
+         */
         mRecyclerView.setHasFixedSize(true);
 
+        // TODO (11) Pass in 'this' as the ForecastAdapterOnClickHandler
+        /*
+         * The ForecastAdapter is responsible for linking our weather data with the Views that
+         * will end up displaying our weather data.
+         */
         mForecastAdapter = new ForecastAdapter();
 
+        /* Setting the adapter attaches it to the RecyclerView in our layout. */
         mRecyclerView.setAdapter(mForecastAdapter);
 
         /*
@@ -104,6 +120,9 @@ public class MainActivity extends AppCompatActivity {
         new GetWeatherDataTask().execute(location);
 
     }
+
+    // TODO (9) Override ForecastAdapterOnClickHandler's onClick method
+    // TODO (10) Show a Toast when an item is clicked, displaying that item's weather data
 
     /**
      * This method will make the View for the weather data visible and
@@ -177,8 +196,7 @@ public class MainActivity extends AppCompatActivity {
                  * TextView. Later, we'll learn about a better way to display lists of data.
                  */
                 mForecastAdapter.setWeatherData(weatherData);
-            }
-            else
+            } else
                 showErrorMessage();
         }
     }
